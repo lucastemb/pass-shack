@@ -1,4 +1,5 @@
 from database import insert_hashed_masterpass
+from cryption import * 
 def add_master_pass():
     masterpass = input("Master Password: ")
     confirm_masterpass = input("Re-type Master Password: ")
@@ -6,8 +7,9 @@ def add_master_pass():
         print("\nAn error has occured:\nMaster password confirmation does not match.\n")
         add_master_pass()
     else: 
+
         master_hint = input("\nMaster Password Hint (optional): ")
-        insert_hashed_masterpass(masterpass, master_hint)
+        insert_hashed_masterpass(masterpass, AESCipher('+MbQeThVmYq3t6w9z$C&F)J@NcRfUjXnZr4u7x!A%D*G-KaPdSgVkYp3s5v8y/B?').encrypt(master_hint))
         
 
     

@@ -13,23 +13,18 @@ from cryption import *
 from option_six import * 
 
 def masterpass(): 
+    tries = 0
     if curr_master_pass():
         try:
             print("\nYour vault is locked. Verify your master password to continue.")
             masterpw = getpass.getpass("Master Password: ")
-            if pbkdf2_sha256.verify(masterpw, user.password):
-                startup()
-            elif (tries < 3 and has_hint()):
-                tries + 1
-                print(tries)
-                masterpass()
-            else:
-                tries + 1
-                print(tries)
-                print("Hint: ")
-                masterpass()
-                
-                masterpass()
+            while not (pbkdf2_sha256.verify(masterpw, user.password)):
+                tries += 1
+                if(tries >= 3 and has_hint()):
+                    print("\nHint: %s" % (AESCipher('+MbQeThVmYq3t6w9z$C&F)J@NcRfUjXnZr4u7x!A%D*G-KaPdSgVkYp3s5v8y/B?').decrypt(user.hint)))
+                print("\nYour vault is locked. Verify your master password to continue.")
+                masterpw = getpass.getpass("Master Password: ")
+            startup()    
         except (ValueError, SyntaxError, NameError) as e:
             print("Incorrect password. Try again.")
     else:

@@ -7,7 +7,7 @@ def curr_master_pass():
     connection = psycopg2.connect(
         dbname = "passwords",
         host = "localhost",
-        user = "lucastemb"
+        user = "jesustembras"
     )
         
     cursor = connection.cursor()
@@ -20,12 +20,31 @@ def curr_master_pass():
     connection.close()
     return has_pass
 
+def has_hint():
+    hint = True
+    connection = psycopg2.connect(
+        dbname = "passwords",
+        host = "localhost",
+        user = "jesustembras"
+    )
+        
+    cursor = connection.cursor()
+    cursor.execute("select hint from vault;")
+    try: 
+        cursor.fetchone()[0]
+    except: 
+        hint = False
+    cursor.close()
+    connection.close()
+    return hint
+    
+
 def insert_hashed_masterpass(masterpass, hint): 
     hashedpass = pbkdf2_sha256.hash(masterpass)
     connection = psycopg2.connect(
         dbname = "passwords",
         host = "localhost",
-        user = "lucastemb"
+        user = "jesustembras"
     )
     cursor = connection.cursor()
     query = "INSERT INTO vault(masterpass, hint) VALUES(%s, %s);"
@@ -34,4 +53,5 @@ def insert_hashed_masterpass(masterpass, hint):
     connection.commit()
     cursor.close()
     connection.close()
+    
     
