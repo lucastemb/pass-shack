@@ -10,7 +10,7 @@ password = input()
 if (pbkdf2_sha256.verify(password, f"{cur.fetchone()}")):
     print("Welcome!")
 else:
-    print("Fuck off.") 
+    print("Error.") 
 
 cur.close()
 con.close()
